@@ -34,12 +34,15 @@ extern crate clap;
 #[macro_use]
 extern crate error_type;
 
+extern crate colored;
+
 use clap::App;
 use futures::{Async, Future, Poll};
 use futures_cpupool::{CpuFuture, CpuPool};
 use hyper::StatusCode;
 use hyper::header::ContentLength;
 use hyper::server::{Http, Request, Response, Service};
+use colored::Colorize;
 use std::error::Error as StdError;
 use std::fs::File;
 use std::io::{self, Read};
@@ -115,10 +118,10 @@ fn parse_config_from_cmdline() -> Result<Config, Error> {
     };
 
     // Display the configuration to be helpful
-    println!("addr: http://{}", addr);
-    println!("root dir: {:?}", root_dir);
-    println!("server threads: {}", num_server_threads);
-    println!("file threads: {}", num_file_threads);
+    println!("addr: {}", format!("http://{}", addr).green());
+    println!("root dir: {}", root_dir.green());
+    println!("server threads: {}", format!("{}", num_server_threads).green());
+    println!("file threads: {}", format!("{}", num_file_threads).green());
     println!("");
 
     Ok(Config {
